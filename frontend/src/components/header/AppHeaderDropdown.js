@@ -24,16 +24,31 @@ import CIcon from '@coreui/icons-react';
 import avatar8 from './../../assets/images/avatars/8.jpg';
 import axiosYns from 'src/axios';
 import getCookie from 'src/helpers/getToken';
+import { useNavigate } from 'react-router-dom';
+import { removeCookie } from 'src/helpers/cookieUtils';
 
 const AppHeaderDropdown = () => {
-
+  const Navigate = useNavigate();
   const signOut = () => {
     try {
       let token = getCookie('token');
+      console.log(token);
 
       axiosYns.post('/logout', {token:token})
+      .then(({data}) => {
+        console.log(data);
+        if(data.success){
+          removeCookie('type');
+          removeCookie('email');
+          removeCookie('user');
+          removeCookie('token');
+          Navigate('/login')
+        }else{
+          console.log(data);
+        }
+      })
     } catch (error) {
-
+      console.log(error);
     }
   }
 
@@ -101,8 +116,8 @@ const AppHeaderDropdown = () => {
           Lock Account
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="#">
-          <CIcon icon={signOut} onClick={signOut} className="me-2" />
+        <CDropdownItem onClick={signOut}>
+          <CIcon  className="me-2" />
           Log Out
         </CDropdownItem>
       </CDropdownMenu>

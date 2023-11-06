@@ -28,24 +28,39 @@ const _nav = [
   },
   {
     component: CNavTitle,
-    name: 'Theme',
+    name: 'Task Management',
   },
+
   {
     component: CNavItem,
-    name: 'Team_Management',
-    to: '/teams/manage',
+    name: 'Projects',
+    to: '/projects/index',
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Typography',
-    to: '/theme/typography',
-    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+    name: 'Tasks',
+    to: '/tasks/index',
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'New Task',
+    to: '/tasks/create',
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,
-    name: 'Components',
+    name: 'Team Collaboration',
   },
+  {
+    component: CNavItem,
+    name: 'Team Management',
+    to: '/teams/manage',
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+
+
   
 ]
 

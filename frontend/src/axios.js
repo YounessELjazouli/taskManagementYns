@@ -7,7 +7,7 @@ const axiosYns = axios.create({
 });
 
 axiosYns.interceptors.request.use(function (config) {
-  const token = getCookie(JSON.stringify('user').token) ? getCookie(JSON.stringify('user').token) : "";  ;
+  const token = getCookie('token') ? getCookie('token') : "";  ;
   
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;

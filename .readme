@@ -1,0 +1,106 @@
+1. Admin Dashboard:
+
+Task Management:
+Create tasks.
+Assign tasks to employees.
+Set due dates and priorities.
+Edit and delete tasks.
+Mark tasks as completed.
+User Management:
+Add and remove employees.
+Assign roles and permissions to employees.
+Team Collaboration:
+Add and manage teams.
+View team-specific tasks.
+Comment on tasks.
+Notifications:
+Receive notifications for task updates.
+Reporting and Analytics:
+View task completion statistics.
+Profile and Settings:
+Manage profile information and account settings.
+
+2. Employee Dashboard:
+
+Task List:
+View assigned tasks.
+See due dates and priorities.
+Mark tasks as completed.
+Comment on tasks.
+Notifications:
+Receive notifications for task assignments and updates.
+Profile and Settings:
+Manage profile information and notification preferences.
+
+3. Super Admin Dashboard:
+
+Site Management:
+Configure website settings (e.g., site name, logo, colors).
+Manage user roles and permissions.
+Monitor site performance and health.
+User and Role Management:
+Add and remove admins, employees, and super admins.
+Define and edit user roles and their access rights.
+Data and Analytics:
+Access advanced reporting and analytics.
+Database Management:
+Backup and restore data.
+Monitor database performance.
+System Settings:
+Configure email notifications and other system-wide settings.
+
+Schema::create('projects', function (Blueprint $table) {
+$table->id();
+$table->string('name');
+$table->text('description');
+$table->timestamps();
+});
+
+
+Schema::create('tasks', function (Blueprint $table) {
+$table->id();
+$table->string('title');
+$table->text('description');
+$table->date('due_date');
+$table->enum('priority', ['low', 'medium', 'high']);
+status ENUM('to-do', 'in-progress', 'completed') NOT NULL,
+$table->boolean('completed')->default(false);
+$table->unsignedBigInteger('project_id');
+$table->unsignedBigInteger('assigned_to');
+$table->timestamps();
+$table->unsignedBigInteger('user_id');
+$table->foreign('user_id')->references('id')->on('users');
+$table->foreign('project_id')->references('id')->on('projects');
+$table->foreign('assigned_to')->references('id')->on('users');
+});
+
+
+
+Schema::create('teams', function (Blueprint $table) {
+$table->id();
+$table->string('name');
+$table->timestamps();
+});
+
+
+Schema::create('team_user', function (Blueprint $table) {
+$table->id();
+$table->unsignedBigInteger('team_id');
+$table->unsignedBigInteger('user_id');
+$table->timestamps();
+
+$table->foreign('team_id')->references('id')->on('teams');
+$table->foreign('user_id')->references('id')->on('users');
+});
+
+
+Schema::create('comments', function (Blueprint $table) {
+$table->id();
+$table->text('content');
+$table->unsignedBigInteger('task_id');
+$table->unsignedBigInteger('user_id');
+$table->timestamps();
+
+$table->foreign('task_id')->references('id')->on('tasks');
+$table->foreign('user_id')->references('id')->on('users');
+});

@@ -23,4 +23,5 @@
 .env.test.local
 .env.production.local
 
+guidelines.readme
 # Ignore any other project-specific files or directories

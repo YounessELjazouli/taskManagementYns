@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -21,32 +21,34 @@ import getCookie from 'src/helpers/getToken';
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-
+  const Navigate = useNavigate();
   const login = async () => {
     try {
       const formData = {
         email: email,
         password: password,
       }
-      axiosYns.post('/login', formData)
-        .then(async ({ data }) => {
-          if (data.success) {
-            document.cookie = await `token=${data.token}; path=/`;
-            document.cookie = await `user=${data.username}; path=/`;
-            document.cookie = await `email=${data.email}; path=/`;
-            document.cookie = await `type=${data.type}; path=/`;
-          }else{
-            console.log(data);
-            alert(data.message)
-          }
-
-        }).catch((err) => {
-          console.log(err);
-        });
+  
+      const response = await axiosYns.post('/login', formData);
+  
+      if (response.data.success) {
+        // Set cookies here
+        document.cookie = `token=${response.data.token}; path=/`;
+        document.cookie = `user=${response.data.username}; path=/`;
+        document.cookie = `email=${response.data.email}; path=/`;
+        document.cookie = `type=${response.data.type}; path=/`;
+        Navigate('/')
+        
+      } else {
+        // Handle login failure
+        console.log(response); // Log the error message
+        alert(response.data.message); // Show an alert with the error message
+      }
     } catch (error) {
       console.error(error);
     }
   }
+  
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
